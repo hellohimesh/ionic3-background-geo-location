@@ -4,13 +4,13 @@
 > **Installation**
 
 **Install the Cordova and Ionic Native plugins:**
-
->ionic cordova plugin add cordova-plugin-geolocation
-> npm install --save @ionic-native/geolocation
-> 
-> ionic cordova plugin add cordova-plugin-mauron85-background-geolocation
- npm install --save @ionic-native/background-geolocation
-
+>  ionic cordova plugin add cordova-plugin-geolocation
+       
+>  npm install --save @ionic-native/geolocation
+       
+>  ionic cordova plugin add cordova-plugin-mauron85-background-geolocation
+>  
+>  npm install --save @ionic-native/background-geolocation
 
 **usage**
 *app.module.ts*
