@@ -1,26 +1,76 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+﻿----------
 
-## How to use this template
 
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/ionic-team/ionic2-app-base).
+> **Installation**
 
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/ionic-team/ionic2-app-base).
+**Install the Cordova and Ionic Native plugins:**
 
-### With the Ionic CLI:
+>ionic cordova plugin add cordova-plugin-geolocation
+> npm install --save @ionic-native/geolocation
+> 
+> ionic cordova plugin add cordova-plugin-mauron85-background-geolocation
+ npm install --save @ionic-native/background-geolocation
 
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
 
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myTabs tabs
-```
+**usage**
+*app.module.ts*
 
-Then, to run it, cd into `myTabs` and run:
+    import {LocationTrackerProvider} from '../providers/location-tracker/location-tracker';
+    import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+    import { Geolocation } from '@ionic-native/geolocation';
+**add to providers**
 
-```bash
-$ ionic cordova platform add ios
-$ ionic cordova run ios
-```
+    providers: [
+        BackgroundGeolocation,
+        Geolocation,
+		 LocationTrackerProvider]
+**Create location.provider.ts**
 
-Substitute ios for android if not on a Mac.
+   
+
+     import {  NgZone } from '@angular/core';
+    import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+    import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+
+
+**Usage**
+
+    this.backgroundGeolocation.configure(config).subscribe((location) => {
+    
+          console.log('BackgroundGeolocation:  ' + location.latitude + ',' + location.longitude);
+    
+          // Run update inside of Angular's zone
+          this.zone.run(() => {
+            this.lat = location.latitude;
+            this.lng = location.longitude;
+          });
+    
+        }, (err) => {
+    
+          console.log(err);
+    
+        });
+    
+        // Turn ON the background-geolocation system.
+        this.backgroundGeolocation.start();
+    
+    
+        // Foreground Tracking
+    
+      let options = {
+        frequency: 3000,
+        enableHighAccuracy: true
+      };
+    
+      this.watch = this.geolocation.watchPosition(options).filter((p: any) => p.code === undefined).subscribe((position: Geoposition) => {
+    
+        console.log(position);
+    
+        // Run update inside of Angular's zone
+        this.zone.run(() => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+        });
+    
+      });
 
